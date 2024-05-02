@@ -90,7 +90,7 @@ router.post("/api/signup", [
               text: "Signup Successfully on Social Book", // plain text body
               html: "<H1>Welcome to Social Book</H1>", // html body
             }).then((result) => {
-              console.log("mailer", result)
+              // console.log("mailer", result)
             }).catch((err) => {
               console.log("error mailer", err)
             })

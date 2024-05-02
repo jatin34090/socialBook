@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useContext } from "react";
 import { UserContext } from "../../App";
+import Spinner from "./Spinner";
 
 const Profile = () => {
   const [myPosts, setMyPosts] = useState([]);
@@ -59,52 +60,62 @@ const Profile = () => {
   };
 
   return (
-    <div style={{ maxWidth: "650px", margin: "0px auto" }}>
-      <div className="my-5 mx-0 border-b-2 border-gray-500 text-2xl ">
-        <div className="flex justify-around ">
-          <div>
-            {console.log("state", state)}
-            <img
-              className=" w-40 h-40 text-black rounded-full"
-              src={state? state.pic : "https://res.cloudinary.com/dbvyslsdc/image/upload/v1713746815/noimage_vcqmbk.jpg"}
-              alt=""
-            />
+    <>
+    
+   { myPosts ? 
+       ( <div style={{ maxWidth: "650px", margin: "0px auto" }}>
+        <div className="my-5 mx-0 border-b-2 border-gray-500 text-2xl ">
+          <div className="flex justify-around ">
+            <div>
+              <img
+                className=" w-40 h-40 text-black rounded-full"
+                src={state? state.pic : "https://res.cloudinary.com/dbvyslsdc/image/upload/v1713746815/noimage_vcqmbk.jpg"}
+                alt=""
+              />
+            </div>
+            <div className="flex flex-col items-center">
+              <h4>{state ? state.name : "loading"}</h4>
+              <div className="flex justify-between gap-5 ">
+                <h6>{myPosts.length} posts</h6>
+                <h6>{state ? state.followers.length : "0"} followers</h6>
+                <h6>{state ? state.following.length : "0"} following</h6>
+              </div>
+            </div>
           </div>
-          <div className="flex flex-col items-center">
-            <h4>{state ? state.name : "loading"}</h4>
-            <div className="flex justify-between gap-5 ">
-              <h6>{myPosts.length} posts</h6>
-              <h6>{state ? state.followers.length : "0"} followers</h6>
-              <h6>{state ? state.following.length : "0"} following</h6>
+          <div className="file-field input-field m-4">
+            <div className="btn">
+              <span>Update Pic</span>
+              <input
+                type="file"
+                onChange={(e) => updatePhoto(e.target.files[0])}
+              />
+            </div>
+            <div className="file-path-wrapper">
+              <input className="file-path validate" type="text" />
             </div>
           </div>
         </div>
-        <div className="file-field input-field m-4">
-          <div className="btn">
-            <span>Update Pic</span>
-            <input
-              type="file"
-              onChange={(e) => updatePhoto(e.target.files[0])}
-            />
-          </div>
-          <div className="file-path-wrapper">
-            <input className="file-path validate" type="text" />
-          </div>
+        <div className="flex flex-wrap justify-center">
+          {myPosts.map((item) => {
+            return (
+              item.photo && item.photo.includes(".mp4") ?
+              <video key={item._id} className="w-1/4" autoPlay loop controls controlsList="nodownload nofullscreen">
+                <source src={item.photo} type="video/mp4" />
+              </video>
+              :
+              <img key={item._id} className="w-1/4" src={item.photo} alt={item.title} />
+            );
+          })}
         </div>
+      </div>)
+    :
+    (
+      <div className="flex justify-center">
+        <Spinner/>
       </div>
-      <div className="flex flex-wrap justify-center">
-        {myPosts.map((item) => {
-          return (
-            <img
-              key={item._id}
-              className="w-1/4"
-              src={item.photo}
-              alt={item.title}
-            />
-          );
-        })}
-      </div>
-    </div>
+    )
+  }
+  </>
   );
 };
 

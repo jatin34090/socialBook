@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useContext } from "react";
 import { UserContext } from "../../App";
 import { useParams } from "react-router-dom";
+import Spinner from "./Spinner";
 
 const UserProfile = () => {
   const [userProfile, setUserProfile] = useState(null);
@@ -132,18 +133,27 @@ const UserProfile = () => {
           <div className="flex flex-wrap justify-center">
             {userProfile.posts.map((item) => {
               return (
-                <img
-                  key={item._id}
-                  className="w-1/4"
-                  src={item.photo}
-                  alt={item.title}
-                />
+                  item.photo && item.photo.includes(".mp4") ?
+            <video key={item._id} className="w-1/4" autoPlay loop controls controlsList="nodownload nofullscreen">
+              <source src={item.photo} type="video/mp4" />
+            </video>
+            :
+            <img key={item._id} className="w-1/4" src={item.photo} alt={item.title} />
+                
+                // <img
+                //   key={item._id}
+                //   className="w-1/4"
+                //   src={item.photo}
+                //   alt={item.title}
+                // />
               );
             })}
           </div>
         </div>
       ) : (
-        <h2> loading...</h2>
+        <div className="flex justify-center">
+          <Spinner/>
+        </div>
       )}
     </>
   );

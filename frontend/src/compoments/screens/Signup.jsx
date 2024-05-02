@@ -2,9 +2,11 @@ import React, { useState, useContext, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import M from "materialize-css";
 import { UserContext } from "../../App";
+import Spinner from "./Spinner";
 
 const Signup = () => {
   const { state, dispatch } = useContext(UserContext);
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -49,7 +51,7 @@ const Signup = () => {
         name,
         email,
         password,
-        pic:url
+        pic: url,
       }),
     })
       .then((res) => res.json())
@@ -74,6 +76,7 @@ const Signup = () => {
       });
   };
   const clickHandler = () => {
+    setLoading(true);
     if (image) {
       uploadPic();
     } else {
@@ -81,47 +84,60 @@ const Signup = () => {
     }
   };
   return (
-    <div className="container mt-8 flex justify-center ">
-      <div className="card p-8 m-auto rounded-3xl drop-shadow-[0px_10px_35px_rgba(255,255,255,0.25)] bg-slate-800 mt-10 text-center max-w-md">
-        <h2 className="text-3xl hover:text-sky-400">Signup</h2>
-        <input
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          type="text"
-          placeholder="Name"
-        />
-        <input
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          type="text"
-          placeholder="Email"
-        />
-        <input
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          type="password"
-          placeholder="Password"
-        />
-        <div className="file-field input-field">
-          <div className="btn bg-sky-400">
-            <span>Upload Pic</span>
-            <input type="file" onChange={(e) => setImage(e.target.files[0])} />
-          </div>
-          <div className="file-path-wrapper">
-            <input className="file-path validate" type="text" />
+    <>
+      {loading? (
+        <div className="flex justify-center">
+          <Spinner />
+        </div>
+      ) : (
+        <div className="container mt-8 flex justify-center ">
+          <div className="card p-8 m-auto rounded-3xl drop-shadow-[0px_10px_35px_rgba(255,255,255,0.25)] bg-slate-800 mt-10 text-center max-w-md">
+            <h2 className="text-3xl hover:text-sky-400">Signup</h2>
+            <input
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              type="text"
+              placeholder="Name"
+            />
+            <input
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              type="text"
+              placeholder="Email"
+            />
+            <input
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              type="password"
+              placeholder="Password"
+            />
+            <div className="file-field input-field">
+              <div className="btn bg-sky-400">
+                <span>Upload Pic</span>
+                <input
+                  type="file"
+                  onChange={(e) => setImage(e.target.files[0])}
+                />
+              </div>
+              <div className="file-path-wrapper">
+                <input className="file-path validate" type="text" />
+              </div>
+            </div>
+            <button
+              onClick={() => clickHandler()}
+              className=" py-2 px-3 text-xl border-2 rounded-md hover:bg-sky-400"
+            >
+              Login
+            </button>
+            <h5 className="mt-4">
+              <Link className="hover:text-sky-400" to="/login">
+                Already have an account ?
+              </Link>
+            </h5>
           </div>
         </div>
-        <button
-          onClick={() => clickHandler()}
-          className=" py-2 px-3 text-xl border-2 rounded-md hover:bg-sky-400"
-        >
-          Login
-        </button>
-        <h5 className="mt-4">
-          <Link className="hover:text-sky-400" to="/login">Already have an account ?</Link>
-        </h5>
-      </div>
-    </div>
+      )}
+    </>
   );
 };
 

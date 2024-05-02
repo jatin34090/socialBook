@@ -116,10 +116,10 @@ router.delete('/api/deletepost/:id', requireLogin, (req, res) => {
         .populate("postedBy", "_id")
         .then((post) => {
             if (post.postedBy._id.toString() === req.user._id.toString()) {
-                console.log("POST IN delete", post);
+                // console.log("POST IN delete", post);
                 post.deleteOne()
                     .then((result) => {
-                        console.log("Result then in delte", result)
+                        // console.log("Result then in delte", result)
                         res.json(result)
                     }).catch((err) => {
                         console.log("Result catch in delte", result)

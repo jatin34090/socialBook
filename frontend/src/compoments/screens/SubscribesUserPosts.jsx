@@ -2,11 +2,12 @@ import React, { useContext, useEffect, useState } from "react";
 import { UserContext } from "../../App";
 import { Link } from "react-router-dom";
 import Avatar from '@mui/material/Avatar';
+import Spinner from "./Spinner";
 
 const SubscribesUserPosts = () => {
   const { state, dispatch } = useContext(UserContext);
   const {comment, setComment} =useState("");
-  const [data, setData] = useState([]);
+  const [data, setData] = useState(null);
   useEffect(() => {
     fetch("/api/getsubpost", {
       headers: {
@@ -120,7 +121,8 @@ const SubscribesUserPosts = () => {
   };
 
   return (
-    <div>
+    <>
+    {data ? (    <div>
       <div className="">
         {data &&
           data.map((item) => {
@@ -153,7 +155,12 @@ const SubscribesUserPosts = () => {
                 </div>
 
                 <div className="card-image">
-                  <img src={item.photo} alt="" />
+                {item.photo && item.photo.includes(".mp4") ?
+                    <video controls autoPlay loop controlsList="nodownload">
+                      <source src={item.photo} type="video/mp4" />
+                    </video>
+                    :
+                    <img src={item.photo} alt="" />}
                   <div className="card-content">
                     <i className={`material-icons text-red-600`}>favorite</i>
                     {item.likes.includes(state._id) ? (
@@ -204,7 +211,13 @@ const SubscribesUserPosts = () => {
             );
           })}
       </div>
+    </div>):(
+      <div className="flex justify-center">
+      <Spinner/>
     </div>
+    )}
+    </>
+
   );
 };
 

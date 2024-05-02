@@ -18,6 +18,7 @@ import UserProfile from "./compoments/screens/UserProfile";
 import SubscribesUserPosts from "./compoments/screens/SubscribesUserPosts";
 import Reset from "./compoments/screens/Reset";
 import NewPassword from "./compoments/screens/NewPassword";
+import Spinner from "./compoments/screens/Spinner";
 export const UserContext = createContext();
 
 const Routing = () => {
@@ -33,7 +34,7 @@ const Routing = () => {
       dispatch({ type: "USER", payload: user });
     } else {
       if (!navigate || !location.pathname.startsWith("/resetpassword")) {
-        // navigate("/login");
+        navigate("/login");
       }    }
   }, []);
   return (
@@ -47,6 +48,7 @@ const Routing = () => {
       <Route path="/myfollowingpost" element={<SubscribesUserPosts />}></Route>
       <Route path="/resetpassword" element={<Reset />}></Route>
       <Route path="/resetpassword/:token" element={<NewPassword />}></Route>
+      <Route path="/loading" element={<Spinner />}></Route>
     </Routes>
   );
 };

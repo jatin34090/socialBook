@@ -1,11 +1,11 @@
 const express = require("express")
 const mongoose = require("mongoose")
-const {MONGOURI} = require("./keys")
 const app = express();
+require('dotenv').config()
 
+const PORT = 5000 || process.env.PORT
 
-
-mongoose.connect(MONGOURI).then(()=>{
+mongoose.connect(process.env.MONGOURI).then(()=>{
     
     console.log("Connected to mongoDB")
 })
@@ -21,6 +21,6 @@ app.use(require('./routes/user'))
 
 
 
-app.listen(5000, () => {
+app.listen(PORT, () => {
     console.log("server is running on port 5000")
 })

@@ -18,9 +18,7 @@ const transporter = nodemailer.createTransport({
   }
 });
 const jwt = require('jsonwebtoken');
-const { JWT_SECRET } = require("../keys")
-// const requireLogin = require("../middleware/requireLogin")
-
+const JWT_SECRET = process.env.JWT_SECRET;
 
 router.post("/api/signin", (req, res) => {
   const { email, password } = req.body
